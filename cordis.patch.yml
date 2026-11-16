@@ -1,0 +1,3 @@
+# Run scripts/install.js after installing the package. The compaction engine is
+# owned by agent presets, so the installer preserves and edits those entries.
+[]

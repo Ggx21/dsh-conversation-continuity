@@ -1,0 +1,37 @@
+{
+  "name": "dsh-conversation-continuity",
+  "version": "0.1.0",
+  "description": "Conversation-aware compaction for DeepSeek Harness, preserving voice, relationships and the scope of corrections.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./prompts": "./src/prompts.js",
+    "./package.json": "./package.json"
+  },
+  "files": ["index.js", "src", "scripts", "cordis.patch.yml", "README.md", "LICENSE", "NOTICE"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "scripts": {
+    "test": "node --test",
+    "install-profile": "node scripts/install.js"
+  },
+  "engines": { "node": ">=22" },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.1.0",
+    "@deepseek-ai/dsh-compaction-basic": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-system-prompt": "0.2.2-rc.3"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "~4.1.0",
+    "@deepseek-ai/dsh-compaction-basic": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-system-prompt": "0.2.2-rc.3"
+  },
+  "dependencies": { "yaml": "^2.8.1" },
+  "license": "MIT",
+  "author": "Gaoxu Guo",
+  "repository": { "type": "git", "url": "git+https://github.com/Ggx21/dsh-conversation-continuity.git" },
+  "bugs": { "url": "https://github.com/Ggx21/dsh-conversation-continuity/issues" },
+  "keywords": ["dsh", "dsh-plugin", "deepseek-harness", "compaction", "ai-companion", "conversation"]
+}
