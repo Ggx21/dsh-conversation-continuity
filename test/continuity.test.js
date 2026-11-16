@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mkdtemp, readFile, writeFile, readdir, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, readdir, rm, symlink } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import YAML from 'yaml';
@@ -147,6 +150,18 @@ test('a dry run performs no writes', async t => {
   const directory = await temporaryProfile(t);
   assert.equal((await configureProfile(directory, { dryRun: true })).changed, 1);
   assert.deepEqual(await readdir(directory), ['cordis.patch.yml']);
+  assert.equal(await readFile(path.join(directory, 'cordis.patch.yml'), 'utf8'), profileSource);
+});
+
+test('the installer CLI works through a package manager directory link', async t => {
+  const directory = await temporaryProfile(t);
+  const alias = path.join(directory, 'package-link');
+  const repository = fileURLToPath(new URL('../', import.meta.url));
+  await symlink(repository, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  const { stdout } = await promisify(execFile)(process.execPath, [
+    path.join(alias, 'scripts/install.js'), '--profile-dir', directory, '--dry-run',
+  ]);
+  assert.equal(JSON.parse(stdout).changed, 1);
   assert.equal(await readFile(path.join(directory, 'cordis.patch.yml'), 'utf8'), profileSource);
 });
 

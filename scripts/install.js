@@ -67,7 +67,7 @@ export async function configureProfile(profileDir, { runtimeDir, uninstall = fal
   return { changed, backup };
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && await fs.realpath(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const { values } = parseArgs({ options: {
       'profile-dir': { type: 'string' },
